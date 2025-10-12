@@ -1,0 +1,79 @@
+{{ block title }}
+Première prise de décision - Instructions
+{{ endblock }}
+{{ block content }}
+
+{{ if player.round_dg == 1 }}
+<div class="card" id="instr_DG">
+  <p>Chaque participant joue dans un groupe de deux personnes : un <strong>participant A </strong> et un <strong>participant B</strong>.</p>
+
+  <p>Le participant A reçoit une dotation initiale de <strong>20&nbsp;ECUs</strong>.  
+  Le participant B ne reçoit aucune dotation initiale.</p>
+
+  <ul>
+    <li><strong>Rôle de participant A</strong> : Vous pouvez décider d'envoyer ou non une partie de votre dotation au participant B. La somme envoyée pourra être comprise entre 0 et 20 ECUs. Vous conservez pour vous la somme que vous n'avez pas envoyée. </li>
+    <br><li><strong>Rôle de participant B</strong> : Vous n'avez pas de décision à prendre. Vous recevez le montant que le participant A choisit de vous envoyer.</li>
+  </ul>
+
+  <p> À la fin de l'expérience, vous serez apparié(e) au hasard à {{ if player.condition == "Intra"}} un autre participant{{ elif player.condition == "Inter"}} <b> un participant parmi {{ if player.location == "INSP"}}
+      le groupe de participants extérieurs à l'INSP{{ elif player.location == "B" }}
+      le groupe de participants de l'INSP{{ endif }}</b>{{ endif }}. Vos rôles respectifs seront tirés au sort et votre gain final dépendra du rôle qui vous sera attribué ainsi que des décisions prises.</p>
+
+  <p> La page suivante pour présentera un "simulateur" qui vous permettra de mieux comprendre ces instructions. </p>
+
+<button class="button button1"> Aller vers le simulateur </button>
+</div>
+
+{{ elif player.round_tg == 1 }}
+<div class="card" id="instr_TG">
+  <p>Chaque participant joue dans un groupe de deux personnes : un <strong>participant A</strong> et un <strong>participant B</strong>.  
+  Les deux participants commencent chacun avec une dotation de <strong>10&nbsp;ECUs</strong>.</p>
+
+  <ul>
+    <li><strong>Le participant A </strong> décide d'un montant à envoyer. Le montant envoyé est multiplié par 3 et transféré au participant B.</li>
+    <li><strong>Le participant B </strong> n'est pas informé lors de sa décision du montant reçu par le participant A. Il décide, pour chaque montant reçu possible, la somme qu'il souhaiterait renvoyer au participant A.</li>
+  </ul>
+
+  <p>Dans cette prise de décision, vous déclarerez la décision que vous souhaiteriez prendre en tant que participant A, puis en tant que participant B.</p>
+
+  <p>À la fin de l'expérience :</p>
+  <ul>
+    <li>Vous serez  apparié(e) au hasard à {{ if player.condition == "Intra"}} un autre participant{{ elif player.condition == "Inter"}} <b> un participant parmi {{ if player.location == "INSP "}}
+      le groupe de participants extérieurs à l'INSP{{ elif player.location == "B" }}
+      le groupe de participants de l'INSP{{ endif }}</b>{{ endif }}</li>
+    <li>Votre rôle effectif (A ou B) sera déterminé <strong>au hasard</strong>.</li>
+    <li>Le montant envoyé sera déterminé par la décision du participant qui s'est vu attribué le rôle A. Ce montant sera multiplié par trois.</li>
+    <li>Le montant renvoyé à A sera déterminé par la décision du participant qui s'est vu attribué le rôle B, pour le montant reçu.</li>
+  </ul>
+  <p> Nous insistons sur le fait que toutes vos décisions sont importantes, car elles pourront être prise en compte pour le calcul de votre gain. </p>
+  <br>
+  <p> La page suivante vous présentera un "simulateur" qui vous permettra de mieux comprendre ces instructions. </p>
+
+<button class="button button1"> Aller vers le simulateur </button>
+</div>
+{{ elif player.round_pgg == 1 }}
+<div class="card" id="instr_PGG">
+<p>Vous êtes dans un groupe de <strong>4 participants</strong> </p>
+{{ if player.condition == "Inter"}}
+<p>Ce groupe sera nécessairement composé de <strong>deux participants de l'INSP  {{ if player.location == "INSP" }} (dont vous) {{ endif }} </strong> et de <strong>deux participants extérieurs à l'INSP{{ if player.location == "B" }} (dont vous){{ endif }}</strong>.</p>
+{{ endif }}
+  <p>Chaque participant doit décider combien de sa dotation il conserve pour lui-même et combien il place dans un compte collectif.</p>
+
+  <ul>
+    <li>La valeur de chaque ECU placé dans le compte collectif est  <strong> multipliée par 1,6</strong>.</li>
+    <li>Le montant total obtenu est ensuite divisé en parts égales et versé à chacun des 4 participants.</li>
+  </ul>
+
+  <p>Les ECUs qui ne sont pas placés dans le compte collectif ne sont pas multipliés et sont conservés par le participant.</p>
+
+  <p> La page suivante pour présentera un "simulateur" qui vous permettra de mieux comprendre ces instructions. </p>
+
+<button class="button button1"> Aller vers le simulateur </button>
+
+</div>
+{{ endif }}
+
+{% load otree static %}
+    <link rel="stylesheet" href="{% static 'global/style.css' %}"/>
+
+{{ endblock }}

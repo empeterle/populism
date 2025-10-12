@@ -1,0 +1,61 @@
+{{ block title }}
+Troisième prise de décision
+{{ endblock }}
+{{ block content }}
+
+{{ if player.round_dg == 3 }}
+<div class="card" id="act_DG">
+<p> Vous disposez de 20 ECUs. Si vous êtes tiré(e) au sort comme participant A, combien souhaitez envoyer au participant B ? </p>
+
+{{ if player.condition == "Inter"}}
+<p> <i> Rappel : Le participant B fera partie du groupe {{ if player.location == "INSP"}}
+      de participants extérieurs à l'INSP{{ elif player.location == "B" }}
+      de participants de l'INSP{{ endif }}.</i> </p>
+{{ endif }}
+<br>
+{{  form.dg_send }}
+<p><i>La valeur à entrer doit être comprise entre 0 et 20 ECUs inclus.</i></p>
+<br>
+<button class="button button1"> Valider ma décision </button>
+</div>
+{{ elif player.round_tg == 3 }}
+<div class="card" id="act_TG">
+<p> Vous disposez de 10 ECUs. Si vous êtes tiré(e) au sort comme participant A, combien souhaitez envoyer au participant B ? </p>
+<p> Si cette décision est appliquée, le participant B recevra ce montant multiplié par trois, et décidera
+    d'un montant à vous renvoyer.
+</p>
+{{ if player.condition == "Inter"}}
+<p> <i> Rappel : Le participant B fera partie du groupe {{ if player.location == "INSP"}}
+      de participants extérieurs à l'INSP{{ elif player.location == "B" }}
+      de participants de l'INSP{{ endif }}.</i> </p>
+{{ endif }}
+<br>
+{{  form.tg_send }}
+<p><i>La valeur à entrer doit être comprise entre 0 et 10 ECUs inclus.</i></p>
+<br>
+<button class="button button1"> Valider ma décision </button>
+</div>
+
+
+{{ elif player.round_pgg == 3 }}
+<div class="card" id="act_PGG">
+
+<p>Vous disposez de 20 ECUs. Combien souhaitez vous contribuer au compte collectif ?</p>
+<p></p>
+
+{{ if player.condition == "Inter"}}
+<p><i>Rappel : Votre groupe sera nécessairement composé de <strong>deux participants de l'INSP  {{ if player.location == "INSP" }} (dont vous) {{ endif }} </strong> et de <strong>deux participants extérieurs à l'INSP{{ if player.location == "B" }} (dont vous){{ endif }}</strong>.</i></p>
+{{ endif }}
+
+ {{  form.pgg_contrib }}
+<p><i>La valeur à entrer doit être comprise entre 0 et 20 ECUs inclus.</i></p>
+
+<button class="button button1"> Valider ma décision </button>
+</div>
+{{ endif }}
+
+{% load otree static %}
+    <link rel="stylesheet" href="{% static 'global/style.css' %}"/>
+
+{{ endblock }}
+

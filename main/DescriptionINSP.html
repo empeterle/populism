@@ -1,0 +1,25 @@
+{{ block title }}
+Vous et les autres participants.
+{{ endblock }}
+{{ block content }}
+
+<div class="card">
+    <p> Les participants avec qui vous intéragirez dans cette expérience pourront venir de deux groupes. </p>
+<br>
+    <p> <strong>Participants actuellement étudiants à l'INSP.</strong></p>
+    <p> Certains participants sont étudiants de l'INSP. L'institut national du service publique (INSP) est une école d'application qui a pour mission de recruter et former les (futurs) administrateurs de l'Etat. Les administrateurs de l'État forment un corps appartenant à la haute fonction publique. Ils peuvent être nommés dans des emplois supérieurs de l'Etat et/ou exercer des fonctions de conseil du Gouvernement.
+A l'issue de leur formation, les élèves peuvent ainsi intégrer des cabinets de préfecture, la sous-direction de bureaux ministériels ou la diplomatie française.
+</p>
+<br>
+    <p> <strong>Participants extérieurs à l'INSP.</strong></p>
+    <p> Les autres participants ont été recrutés dans une université d'une ville de province. Ce sont majoritairement des étudiants provenant de filières universitaires variées.
+</p>
+<br>
+<button class="button button1"> Continuer </button>
+</div>
+
+{% load otree static %}
+    <link rel="stylesheet" href="{% static 'global/style.css' %}"/>
+
+
+{{ endblock }}

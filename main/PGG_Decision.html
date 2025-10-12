@@ -1,0 +1,22 @@
+{{ block title }}
+{{ round }} prise de décision
+{{ endblock }}
+{{ block content }}
+
+<div class="card">
+
+{{ if player.condition == "Intra"}}
+<p> Rappel de la composition des groupes Intra </p>
+{{ elif player.condition == "Inter"}}
+<p> Rappel de la composition des groupes Inter </p>
+{{ endif }}
+<p> Combien souhaitez vous contribuer ?</p>
+ {{  form.pgg_contrib }}
+
+<button class="button button1"> Continuer </button>
+</div>
+
+{% load otree static %}
+    <link rel="stylesheet" href="{% static 'global/style.css' %}"/>
+
+{{ endblock }}

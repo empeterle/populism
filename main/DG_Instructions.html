@@ -1,0 +1,31 @@
+{{ block title }}
+{{ round }} prise de décision
+{{ endblock }}
+{{ block content }}
+
+<div class="card">
+  <p>Chaque participant joue dans un groupe de deux personnes : un <strong>envoyeur</strong> et un <strong>receveur</strong>.</p>
+
+  <p>L'envoyeur reçoit une dotation initiale de <strong>10&nbsp;€</strong>.  
+  Le receveur ne reçoit aucune dotation initiale.</p>
+
+  <ul>
+    <li><strong>Rôle d'envoyeur</strong> : vous décidez combien de votre dotation de 10&nbsp;€ vous conservez pour vous et combien vous donnez au receveur.</li>
+    <li><strong>Rôle de receveur</strong> : vous n'avez pas de décision à prendre. Vous recevez le montant que l'envoyeur choisit de vous donner.</li>
+  </ul>
+
+  <p>À la fin de l'expérience, vous serez apparié à un autre participant et votre gain final dépendra du rôle qui vous sera attribué ainsi que des décisions prises.</p>
+
+{{ if player.condition == "Intra"}}
+<p> Instructions pour l'intra groupe </p>
+{{ elif player.condition == "Inter"}}
+<p> Instructions pour l'inter groupe </p>
+{{ endif }}
+
+<button class="button button1"> Continuer </button>
+</div>
+
+{% load otree static %}
+    <link rel="stylesheet" href="{% static 'global/style.css' %}"/>
+
+{{ endblock }}

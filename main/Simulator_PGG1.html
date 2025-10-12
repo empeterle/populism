@@ -1,0 +1,249 @@
+{{ block title }}
+Première prise de décision - Simulateur
+{{ endblock }}
+
+{{ block content }}
+
+<div class="card" id="pgg-sim">
+  <p class="muted">
+    Ce simulateur n'a qu'un rôle pédagogique&nbsp;: rien n’est enregistré. 
+    Vous pourrez prendre votre décision quand vous aurez passé cet écran.
+  </p>
+<p class="muted">
+    Dans ce simulateur, vous êtes le participant 1. Vous pouvez modifier les montants que chaque participant met dans le compte collectif et voir directement comment cela change les gains de chacun. Pour aller plus vite, vous pouvez aussi utiliser les « scénarios rapides » en bas de l'écran.
+  </p>
+  <script>
+    // ==== Paramètres du jeu ====
+    const N_PLAYERS = 4;   // taille du groupe
+    const ENDO = 20;       // dotation individuelle (ECU)
+    const MULT = 1.6;      // facteur appliqué au pot collectif
+  </script>
+
+  <!-- Contrôles de contribution pour 4 joueurs -->
+  <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+    <section class="panel">
+      <h4>Participant 1 — <strong>Vous</strong></h4>
+      <div class="input-row">
+        <button type="button" class="btn minus" data-target="p1">−</button>
+        <input id="p1" type="number" step="1" min="0" max="20" value="0" inputmode="numeric" />
+        <button type="button" class="btn plus" data-target="p1">+</button>
+      </div>
+      <input id="p1Range" type="range" step="1" min="0" max="20" value="0" class="full-slider"/>
+    </section>
+
+    <section class="panel">
+      <h4>Participant 2</h4>
+      <div class="input-row">
+        <button type="button" class="btn minus" data-target="p2">−</button>
+        <input id="p2" type="number" step="1" min="0" max="20" value="0" inputmode="numeric" />
+        <button type="button" class="btn plus" data-target="p2">+</button>
+      </div>
+      <input id="p2Range" type="range" step="1" min="0" max="20" value="0" class="full-slider"/>
+    </section>
+
+    <section class="panel">
+      <h4>Participant 3</h4>
+      <div class="input-row">
+        <button type="button" class="btn minus" data-target="p3">−</button>
+        <input id="p3" type="number" step="1" min="0" max="20" value="0" inputmode="numeric" />
+        <button type="button" class="btn plus" data-target="p3">+</button>
+      </div>
+      <input id="p3Range" type="range" step="1" min="0" max="20" value="0" class="full-slider"/>
+    </section>
+
+    <section class="panel">
+      <h4>Participant 4</h4>
+      <div class="input-row">
+        <button type="button" class="btn minus" data-target="p4">−</button>
+        <input id="p4" type="number" step="1" min="0" max="20" value="0" inputmode="numeric" />
+        <button type="button" class="btn plus" data-target="p4">+</button>
+      </div>
+      <input id="p4Range" type="range" step="1" min="0" max="20" value="0" class="full-slider"/>
+    </section>
+  </div>
+
+  <!-- Récap dynamique -->
+  <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem;">
+    <div class="tile">
+      <div class="label">Compte collectif après multiplication</div>
+      <div class="value" id="public_after">0 ECU</div>
+      <div class="sub">= total × 1,6</div>
+    </div>
+    <div class="tile">
+      <div class="label">Retour par personne</div>
+      <div class="value" id="per_person">0 ECU</div>
+      <div class="sub">= compte collectif ÷ 4 (arrondi)</div>
+    </div>
+  </div>
+
+  <!-- Gains individuels -->
+  <div class="grid-4" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1rem;">
+    <div class="tile">
+      <div class="label">Gain Part. 1 (Vous)</div>
+      <div class="value" id="pay_p1">0 ECU</div>
+    </div>
+    <div class="tile">
+      <div class="label">Gain Part. 2</div>
+      <div class="value" id="pay_p2">0 ECU</div>
+    </div>
+    <div class="tile">
+      <div class="label">Gain Part. 3</div>
+      <div class="value" id="pay_p3">0 ECU</div>
+    </div>
+    <div class="tile">
+      <div class="label">Gain Part. 4</div>
+      <div class="value" id="pay_p4">0 ECU</div>
+    </div>
+  </div>
+
+  <!-- Scénarios rapides en bas -->
+  <div class="panel" style="margin-top:1.5rem;">
+    <h4>Scénarios rapides</h4>
+    <div class="quick">
+      <button type="button" class="btn ghost" data-scn="all_zero">Tous gardent tout</button>
+      <button type="button" class="btn ghost" data-scn="you_free_ride">Vous 0, autres tout</button>
+      <button type="button" class="btn ghost" data-scn="you_all_others_zero">Vous tout, autres 0</button>
+      <button type="button" class="btn ghost" data-scn="half_all">Tous 50&nbsp;%</button>
+      <button type="button" class="btn ghost" data-scn="all_all">Tous tout</button>
+    </div>
+  </div>
+
+  <br>
+  <button class="button button1">J'ai compris, continuer</button>
+</div>
+
+<style>
+  .panel { padding: .75rem; border: 1px solid #eee; border-radius: .5rem; }
+  .input-row { display:flex; gap:.5rem; align-items:center; margin:.5rem 0; }
+  .input-row input[type="number"] { width:6rem; text-align:center; }
+  .btn { padding:.25rem .5rem; border:1px solid #ddd; border-radius:.5rem; background:#f8f8f8; cursor:pointer; }
+  .btn:active { transform: translateY(1px); }
+  .minus, .plus { width:2rem; }
+  .tile { padding: .75rem; border:1px solid #eee; border-radius:.5rem; text-align:center; }
+  .tile .label { font-size:.9rem; color:#666; }
+  .tile .value { font-size:1.25rem; font-weight:700; margin:.25rem 0; }
+  .tile .sub { font-size:.85rem; color:#888; }
+  .muted { color:#666; font-size:.9rem; }
+  .quick { display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; }
+  input[type="range"].full-slider { width:100%; margin-top:.5rem; }
+</style>
+
+<script>
+(function () {
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  const toECU = (x) => {
+  const n = Number(x) || 0;
+  return n.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' ECU';
+  };
+  const ids = ['p1','p2','p3','p4'];
+  const inputs = ids.map(id => document.getElementById(id));
+  const ranges = ids.map(id => document.getElementById(id + 'Range'));
+
+  const publicAfterEl  = document.getElementById('public_after');
+  const perPersonEl    = document.getElementById('per_person');
+
+  const payEls = {
+    p1: document.getElementById('pay_p1'),
+    p2: document.getElementById('pay_p2'),
+    p3: document.getElementById('pay_p3'),
+    p4: document.getElementById('pay_p4'),
+  };
+
+  function readContribs() {
+    return ids.map((id, i) => {
+      let v = parseInt(inputs[i].value || '0', 10);
+      v = clamp(v, 0, ENDO);
+      inputs[i].value = v;
+      ranges[i].value = v;
+      return v;
+    });
+  }
+
+  function update() {
+    const c = readContribs();
+    const total = c.reduce((a,b)=>a+b,0);
+    const publicAfter = total * MULT;
+    const perPerson = publicAfter / N_PLAYERS;
+    const pays = c.map(ci => (ENDO - ci) + perPerson);
+
+    publicAfterEl.textContent  = toECU(publicAfter);
+    perPersonEl.textContent    = toECU(perPerson);
+
+    ids.forEach((id, i) => {
+      payEls[id].textContent = toECU(pays[i]);
+    });
+  }
+
+  // Liaison number <-> range
+  ranges.forEach((rg, i) => {
+    rg.addEventListener('input', () => { inputs[i].value = rg.value; update(); });
+  });
+  inputs.forEach((inp, i) => {
+    inp.addEventListener('input', () => { 
+      inp.value = clamp(parseInt(inp.value || '0',10), 0, ENDO);
+      ranges[i].value = inp.value; 
+      update(); 
+    });
+  });
+
+  // Boutons +/-
+  document.querySelectorAll('.btn.minus').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tid = btn.getAttribute('data-target');
+      const i = ids.indexOf(tid);
+      inputs[i].value = clamp(Number(inputs[i].value) - 1, 0, ENDO);
+      ranges[i].value = inputs[i].value;
+      update();
+    });
+  });
+  document.querySelectorAll('.btn.plus').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tid = btn.getAttribute('data-target');
+      const i = ids.indexOf(tid);
+      inputs[i].value = clamp(Number(inputs[i].value) + 1, 0, ENDO);
+      ranges[i].value = inputs[i].value;
+      update();
+    });
+  });
+
+  // Scénarios rapides
+  document.querySelectorAll('[data-scn]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const scn = btn.getAttribute('data-scn');
+      const setVal = (id, v) => {
+        const i = ids.indexOf(id);
+        inputs[i].value = v;
+        ranges[i].value = v;
+      };
+      const you = Number(inputs[0].value) || 0;
+
+      if (scn === 'all_zero') {
+        ids.forEach(id => setVal(id, 0));
+      } else if (scn === 'you_free_ride') {
+        setVal('p1', 0);
+        ['p2','p3','p4'].forEach(id => setVal(id, ENDO));
+      } else if (scn === 'you_all_others_zero') {
+        setVal('p1', ENDO);
+        ['p2','p3','p4'].forEach(id => setVal(id, 0));
+      } else if (scn === 'half_all') {
+        ids.forEach(id => setVal(id, Math.floor(ENDO/2)));
+      } else if (scn === 'all_all') {
+        ids.forEach(id => setVal(id, ENDO));
+      } else if (scn === 'match_me') {
+        ['p2','p3','p4'].forEach(id => setVal(id, clamp(you,0,ENDO)));
+      }
+      update();
+    });
+  });
+
+  // Init
+  inputs.forEach(inp => inp.setAttribute('max', ENDO));
+  ranges.forEach(rg => rg.setAttribute('max', ENDO));
+  update();
+})();
+</script>
+
+{% load otree static %}
+<link rel="stylesheet" href="{% static 'global/style.css' %}"/>
+
+{{ endblock }}

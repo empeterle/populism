@@ -1,0 +1,115 @@
+{{ block title }}
+Troisième prise de décision - Simulateur
+{{ endblock }}
+
+{{ block content }}
+
+<div class="card" id="dg-sim">
+  <p class="muted">
+    Ce simulateur n'a qu'un rôle pédagogique&nbsp;: rien n’est enregistré. 
+    Vous pourrez prendre votre décision quand vous aurez passé cet écran.
+  </p>
+
+  <script>
+    // ===== Paramètres (modifiables) =====
+    const ENDO = 20;      // Dotation du donneur (ECU)
+    const REC_ENDO = 0;   // Dotation initiale du receveur (ECU)
+    const R_MULT = 1;     // Multiplicateur appliqué au montant donné (1 par défaut)
+  </script>
+
+  <!-- Contrôle: montant donné -->
+  <section class="panel">
+    <h4>Montant envoyé par le participant A.</h4>
+    <div class="input-row">
+      <button type="button" class="btn minus" data-target="give">−</button>
+      <input id="give" type="number" step="1" min="0" max="20" value="0" inputmode="numeric" />
+      <button type="button" class="btn plus" data-target="give">+</button>
+    </div>
+    <input id="giveRange" type="range" step="1" min="0" max="20" value="0" class="full-slider"/>
+  </section>
+
+  <!-- Gains -->
+  <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem;">
+    <div class="tile">
+      <div class="label">Gain du participant A</div>
+      <div class="value" id="pay_you">0 ECU</div>
+    </div>
+    <div class="tile">
+      <div class="label">Gain du participant B</div>
+      <div class="value" id="pay_rec">0 ECU</div>
+    </div>
+  </div>
+
+  <br>
+  <button class="button button1">J'ai compris, continuer</button>
+</div>
+
+<style>
+  .panel { padding: .75rem; border: 1px solid #eee; border-radius: .5rem; }
+  .input-row { display:flex; gap:.5rem; align-items:center; margin:.5rem 0; }
+  .input-row input[type="number"] { width:6rem; text-align:center; }
+  .btn { padding:.25rem .5rem; border:1px solid #ddd; border-radius:.5rem; background:#f8f8f8; cursor:pointer; }
+  .btn:active { transform: translateY(1px); }
+  .minus, .plus { width:2rem; }
+  .tile { padding: .75rem; border:1px solid #eee; border-radius:.5rem; text-align:center; }
+  .tile .label { font-size:.9rem; color:#666; }
+  .tile .value { font-size:1.25rem; font-weight:700; margin:.25rem 0; }
+  .muted { color:#666; font-size:.9rem; }
+  input[type="range"].full-slider { width:100%; margin-top:.5rem; }
+</style>
+
+<script>
+(function () {
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  const toECU = (x) => (Number(x)||0).toLocaleString('fr-FR', { maximumFractionDigits: 0 }) + ' ECU';
+
+  const give = document.getElementById('give');
+  const giveRange = document.getElementById('giveRange');
+
+  const payYouEl = document.getElementById('pay_you');
+  const payRecEl = document.getElementById('pay_rec');
+
+  give.max = ENDO;
+  giveRange.max = ENDO;
+
+  function update() {
+    let g = clamp(parseInt(give.value || '0', 10), 0, ENDO);
+    give.value = g;
+    giveRange.value = g;
+
+    const received = g * R_MULT;
+    const kept = ENDO - g;
+
+    payYouEl.textContent = toECU(kept);
+    payRecEl.textContent = toECU(REC_ENDO + received);
+  }
+
+  // Liaison number <-> range
+  give.addEventListener('input', update);
+  giveRange.addEventListener('input', () => { give.value = giveRange.value; update(); });
+
+  // Boutons +/- 
+  document.querySelectorAll('.btn.minus').forEach(btn => {
+    btn.addEventListener('click', () => {
+      give.value = clamp(Number(give.value) - 1, 0, ENDO);
+      giveRange.value = give.value;
+      update();
+    });
+  });
+  document.querySelectorAll('.btn.plus').forEach(btn => {
+    btn.addEventListener('click', () => {
+      give.value = clamp(Number(give.value) + 1, 0, ENDO);
+      giveRange.value = give.value;
+      update();
+    });
+  });
+
+  // Init
+  update();
+})();
+</script>
+
+{% load otree static %}
+<link rel="stylesheet" href="{% static 'global/style.css' %}"/>
+
+{{ endblock }}

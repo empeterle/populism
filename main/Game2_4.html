@@ -1,0 +1,52 @@
+{{ block title }}
+Deuxième prise de décision
+{{ endblock }}
+{{ block content }}
+
+{{ if player.round_tg == 2 }}
+
+<div class="card" id="belief1">
+<p> D'après vous, en moyenne, combien un participant B {{ if player.condition == "Inter"}}{{ if player.location == "INSP"}}
+      extérieur à l'INSP{{ elif player.location == "B" }}issu de l'INSP{{ endif }}{{ endif }} <strong>qui a reçu 15 ECUs</strong> décidera de renvoyer?.</p>
+<p><i>Note : Votre réponse sera comparée aux données collectées à la fin de l'expérience. Si votre réponse est juste à deux ECUs près, vous gagnerez un bonus d'un ECU sur votre paiement final.</i></p>
+{{  form.tg_belief15 }}
+</div>
+
+<div class="card" id="belief1">
+<p> D'après vous, en moyenne, combien un participant B {{ if player.condition == "Inter"}}{{ if player.location == "INSP"}}
+      extérieur à l'INSP{{ elif player.location == "B" }}issu de l'INSP{{ endif }}{{ endif }} <strong>qui a reçu 30 ECUs</strong> décidera de renvoyer?.</p>
+<p><i>Note : Votre réponse sera comparée aux données collectées à la fin de l'expérience. Si votre réponse est juste à deux ECUs près, vous gagnerez un bonus d'un ECU sur votre paiement final.</i></p>
+{{  form.tg_belief30 }}
+</div>
+
+{{ endif }}
+
+{{ if player.round_pgg == 2 }}
+
+{{ if player.condition == "Intra"}}
+<div class="card" id="beliefintra">
+<p> D'après vous quelle sera la contribution moyenne au compte collectif des participants? </p>
+<p><i>Note : Votre réponse sera comparée aux données collectées à la fin de l'expérience. Si votre réponse est juste à deux ECUs près, vous gagnerez un bonus d'un ECU sur votre paiement final.</i></p>
+{{  form.pgg_beliefintra }}
+</div>
+{{ elif player.condition == "Inter"}}
+<div class="card" id="beliefinter1">
+<p> D'après vous quelle sera la contribution moyenne au compte collectif des participants {{ if player.location == "B"}}extérieur à l'INSP{{ elif player.location == "INSP" }}issu de l'INSP{{ endif }} ? </p>
+<p><i>Note : Votre réponse sera comparée aux données collectées à la fin de l'expérience. Si votre réponse est juste à deux ECUs près, vous gagnerez un bonus d'un ECU sur votre paiement final.</i></p>
+{{  form.pgg_beliefinteringroup }}
+</div>
+
+<div class="card" id="beliefinter2">
+<p> D'après vous quelle sera la contribution moyenne au compte collectif des participants {{ if player.location == "INSP"}}extérieur à l'INSP{{ elif player.location == "B" }}issu de l'INSP{{ endif }} ? </p>
+<p><i>Note : Votre réponse sera comparée aux données collectées à la fin de l'expérience. Si votre réponse est juste à deux ECUs près, vous gagnerez un bonus d'un ECU sur votre paiement final.</i></p>
+{{  form.pgg_beliefinteroutgroup }}
+</div>
+{{ endif }}
+{{ endif }}
+<br>
+<button class="button button1"> Valider </button>
+
+{% load otree static %}
+    <link rel="stylesheet" href="{% static 'global/style.css' %}"/>
+
+{{ endblock }}

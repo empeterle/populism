@@ -1,0 +1,32 @@
+{{ block title }}
+{{ round }} prise de décision
+{{ endblock }}
+{{ block content }}
+
+<div class="card">
+<p>Vous êtes dans un groupe de <strong>4 participants</strong>.<br>
+  Chaque participant reçoit une dotation initiale de <strong>20&nbsp;€</strong>.</p>
+
+  <p>Chaque participant doit décider combien de sa dotation il conserve pour lui-même et combien il place dans le compte collectif.</p>
+
+  <ul>
+    <li>Le montant placé dans le compte collectif par les 4 participants est additionné.</li>
+    <li>Le total du compte collectif est multiplié par <strong>1,6</strong>.</li>
+    <li>Le montant obtenu est ensuite divisé en parts égales et versé à chacun des 4 participants.</li>
+  </ul>
+
+  <p>L’argent conservé individuellement reste acquis au participant qui l'a gardé.</p>
+{{ if player.condition == "Intra"}}
+<p> Instructions pour l'intra groupe </p>
+{{ elif player.condition == "Inter"}}
+<p> Instructions pour l'inter groupe </p>
+{{ endif }}
+
+<button class="button button1"> Continuer </button>
+
+</div>
+
+{% load otree static %}
+    <link rel="stylesheet" href="{% static 'global/style.css' %}"/>
+
+{{ endblock }}

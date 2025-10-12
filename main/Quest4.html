@@ -1,0 +1,20 @@
+{{ block title }}
+Avant de terminer ...
+{{ endblock }}
+{{ block content }}
+
+<div class="card">
+<p> Merci de répondre aux questions suivantes.</p>
+<br>
+{{ formfields }}
+<br>
+<button class="button button1"> Continuer </button>
+</div>
+
+
+
+{% load otree static %}
+    <link rel="stylesheet" href="{% static 'global/style.css' %}"/>
+
+
+{{ endblock }}

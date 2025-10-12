@@ -1,0 +1,98 @@
+{% load otree static %}
+
+{{ block title }}Avant de terminer ...{{ endblock }}
+
+{{ block content }}
+<link rel="stylesheet" href="{% static 'global/style.css' %}"/>
+
+<p>Merci de répondre aux questions suivantes.</p>
+<p>Pour chaque affirmation, cochez la case correspondant à votre degré d’accord.</p>
+
+<div class="likert-stacks">
+  {{ for field in form }}
+    <div class="q-block">
+      <div class="q-label">{{ field.label }}</div>
+
+      <table class="mini-likert">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Tout à fait d'accord</th>
+            <th>Plutôt d'accord</th>
+            <th>Ni d'accord, ni pas d'accord</th>
+            <th>Plutôt en désaccord</th>
+            <th>En complet désaccord</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th class="your-answer">Votre réponse</th>
+            {{ for choice in field }}
+              <td class="mini-cell">{{ choice }}</td>
+            {{ endfor }}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  {{ endfor }}
+</div>
+
+<br>
+<button class="button button1"> Continuer </button>
+
+
+<style>
+  .likert-stacks { display: grid; gap: 1rem; }
+
+  /* Make the affirmation pop */
+  .q-block {
+    padding: 0.9rem 1rem 0.75rem 1rem;
+    border: 1px solid #e7e7e7;
+    border-radius: 12px;
+    background: #fff;
+  }
+  .q-label {
+    font-weight: 700;
+    font-size: 1.08rem;
+    line-height: 1.45;
+    margin-bottom: .6rem;
+    background: #f8fafc;              /* subtle tint behind the statement */
+    border-left: 4px solid #2563eb;    /* accent bar */
+    padding: .5rem .65rem .5rem .75rem;
+    border-radius: 8px;
+  }
+
+  /* Table layout */
+  .mini-likert { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  .mini-likert th, .mini-likert td { text-align: center; padding: .45rem .25rem; }
+  .mini-likert .your-answer { text-align: left; white-space: nowrap; padding-left: .2rem; color: #6b7280; }
+
+  /* De-emphasize header labels */
+  .mini-likert thead th {
+    font-size: .88rem;
+    font-weight: 500;
+    color: #6b7280;                    /* muted grey */
+    padding-top: .25rem; padding-bottom: .35rem;
+  }
+  .mini-likert thead th:first-child { width: 7.5rem; }
+
+  /* Radios: centered, a bit larger; keep labels hidden to avoid repetition */
+  .mini-cell { text-align: center; }
+  .mini-cell label {
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 0;                      /* hide repeated option text */
+  }
+  .mini-cell input[type="radio"] {
+    transform: scale(1.12);
+    font-size: initial;
+    margin: 0;
+  }
+
+  /* Slightly tighter vertical spacing overall */
+  .q-block + .q-block { margin-top: 0; }
+  @media (max-width: 720px) {
+    .q-label { font-size: 1.02rem; }
+    .mini-likert thead th { font-size: .84rem; }
+  }
+</style>
+{{ endblock }}

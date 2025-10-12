@@ -1,0 +1,23 @@
+{{ block title }}
+{{ round }} prise de décision
+{{ endblock }}
+{{ block content }}
+
+<div class="card">
+<p> Décision Send Back pour le Dictator Game </p>
+
+{{ if player.condition == "Intra"}}
+<p> Vous êtes associé Intra </p>
+{{ elif player.condition == "Inter"}}
+<p> Vous êtes associé Inter </p>
+{{ endif }}
+
+{{  form.tg_sendback }}
+<button class="button button1"> Continuer </button>
+</div>
+
+{% load otree static %}
+    <link rel="stylesheet" href="{% static 'global/style.css' %}"/>
+
+
+{{ endblock }}

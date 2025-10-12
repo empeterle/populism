@@ -1,0 +1,70 @@
+{% load otree static %}
+
+{{ block title }}
+Avant de terminer ...
+{{ endblock }}
+
+{{ block content }}
+
+<link rel="stylesheet" href="{% static 'global/style.css' %}"/>
+<p class="q-intro">
+  <span class="q-intro-lead">Quel degré général de confiance avez-vous envers…</span>
+  <span class="q-intro-note">(Cochez les cases correspondantes)</span>
+</p> <br>
+
+<div class="card">
+<table class="likert-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Tout à fait confiance</th>
+        <th>Plutôt confiance</th>
+        <th>Ni confiance, ni pas confiance</th>
+        <th>Plutôt pas confiance</th>
+        <th>Pas du tout confiance</th>
+      </tr>
+    </thead>
+    <tbody>    
+    {{ for field in form }}
+        <tr>
+            <th>{{ field.label }}</th>
+            {{ for choice in field }}
+                <td>{{ choice }}</td>
+            {{ endfor }}
+        </tr>
+    {{ endfor }}
+</table>
+<br>
+<button class="button button1"> Continuer </button>
+    
+</div>
+<style>
+  .likert-table { width: 100%; border-collapse: collapse; }
+  .likert-table th, .likert-table td { padding: .5rem; text-align: center; border-bottom: 2px solid #eee; }
+  .likert-table thead th:first-child,
+  .likert-table tbody th[scope="row"] { text-align: left; white-space: nowrap; font-weight: 600; }
+  .likert-cell input[type="radio"] { transform: scale(1.1); }
+/* Emphasized intro, compact spacing */
+.q-intro {
+  margin: .25rem 0 .25rem 0;   /* tight so it doesn't lower the table */
+  line-height: 1.25;
+  font-weight: 700;
+  font-size: 1.06rem;
+}
+
+.q-intro-lead {
+  padding-left: .6rem;
+  border-left: 4px solid #2563eb; /* accent bar */
+}
+
+.q-intro-note {
+  margin-left: .5rem;
+  font-weight: 500;
+  font-style: italic;
+  color: #6b7280;               /* muted */
+}
+
+</style>
+
+
+{{ endblock }}

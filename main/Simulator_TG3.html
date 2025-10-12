@@ -1,0 +1,155 @@
+{{ block title }}
+Troisième prise de décision - Simulateur
+{{ endblock }}
+
+{{ block content }}
+
+<div class="card" id="trust-sim">
+  <p class="muted">Ce simulateur n'a qu'un rôle pédagogique&nbsp;: rien n’est enregistré. Vous pourrez prendre votre décision quand vous aurez passé cet écran.</p>
+
+  <script>
+    const ENDO = 10;   // dotation par participant (ECU)
+    const MULT = 3;    // multiplicateur de l'envoi
+    const CAP_MODE = 'received_only';
+  </script>
+
+  <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+    <!-- Participant A -->
+    <section class="panel">
+      <h4>1) Montant envoyé par <strong>A</strong></h4>
+      <div class="input-row">
+        <button type="button" class="btn minus" data-target="send">−</button>
+        <input id="send" type="number" step="1" min="0" max="10" value="0" inputmode="numeric" />
+        <button type="button" class="btn plus" data-target="send">+</button>
+      </div>
+      <input id="sendRange" type="range" step="1" min="0" max="10" value="0" class="full-slider"/>
+    </section>
+
+    <!-- Participant B -->
+    <section class="panel">
+      <h4>2) Montant renvoyé par <strong>B</strong></h4>
+      <p class="muted" style="margin-top:.25rem;">
+        Le participant B reçoit <strong id="b_received">0 ECU</strong> (montant envoyé × <span id="multTxt">3</span>).
+      </p>
+      <div class="input-row">
+        <button type="button" class="btn minus" data-target="return">−</button>
+        <input id="return" type="number" step="1" min="0" value="0" inputmode="numeric" />
+        <button type="button" class="btn plus" data-target="return">+</button>
+      </div>
+      <input id="returnRange" type="range" step="1" min="0" value="0" class="full-slider"/>
+    </section>
+  </div>
+
+  <!-- Gains -->
+  <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem;">
+    <div class="tile">
+      <div class="label">Gain du participant A</div>
+      <div class="value" id="payoff_A">0 ECU</div>
+    </div>
+    <div class="tile">
+      <div class="label">Gain du participant B</div>
+      <div class="value" id="payoff_B">0 ECU</div>
+    </div>
+  </div>
+
+  <br>
+  <button class="button button1">J'ai compris, continuer</button>
+</div>
+
+<style>
+  .panel { padding: .75rem; border: 1px solid #eee; border-radius: .5rem; }
+  .input-row { display:flex; gap:.5rem; align-items:center; margin:.5rem 0; }
+  .input-row input[type="number"] { width:6rem; text-align:center; }
+  .btn { padding:.25rem .5rem; border:1px solid #ddd; border-radius:.5rem; background:#f8f8f8; cursor:pointer; }
+  .btn:active { transform: translateY(1px); }
+  .minus, .plus { width:2rem; }
+  .tile { padding: .75rem; border:1px solid #eee; border-radius:.5rem; text-align:center; }
+  .tile .label { font-size:.9rem; color:#666; }
+  .tile .value { font-size:1.25rem; font-weight:700; margin:.25rem 0; }
+  .muted { color:#666; font-size:.9rem; }
+  input[type="range"].full-slider { width:100%; margin-top:.5rem; }
+</style>
+
+<script>
+(function () {
+  const toECU = (x) => (Number(x)||0).toLocaleString('fr-FR', { maximumFractionDigits: 0 }) + ' ECU';
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+  const send = document.getElementById('send');
+  const sendRange = document.getElementById('sendRange');
+  const ret = document.getElementById('return');
+  const retRange = document.getElementById('returnRange');
+
+  const bReceivedEl = document.getElementById('b_received');
+  const multTxt = document.getElementById('multTxt');
+  const payoffAEl = document.getElementById('payoff_A');
+  const payoffBEl = document.getElementById('payoff_B');
+
+  multTxt.textContent = MULT;
+
+  const maxReturn = (sent) => {
+    const received = sent * MULT;
+    return (CAP_MODE === 'total_holdings') ? (ENDO + received) : received;
+  };
+
+  function syncReturnBounds(sent) {
+    const cap = maxReturn(sent);
+    ret.max = cap; retRange.max = cap;
+    if (Number(ret.value) > cap) {
+      ret.value = cap; retRange.value = cap;
+    }
+    return cap;
+  }
+
+  function update() {
+    let s = clamp(parseInt(send.value || '0', 10), 0, ENDO);
+    send.value = s; sendRange.value = s;
+
+    const received = s * MULT;
+    bReceivedEl.textContent = toECU(received);
+
+    const cap = syncReturnBounds(s);
+    let r = clamp(parseInt(ret.value || '0', 10), 0, cap);
+    ret.value = r; retRange.value = r;
+
+    const payoffA = ENDO - s + r;
+    const payoffB = ENDO + received - r;
+
+    payoffAEl.textContent = toECU(payoffA);
+    payoffBEl.textContent = toECU(payoffB);
+  }
+
+  // Link inputs <-> sliders
+  send.addEventListener('input', update);
+  sendRange.addEventListener('input', () => { send.value = sendRange.value; update(); });
+  ret.addEventListener('input', update);
+  retRange.addEventListener('input', () => { ret.value = retRange.value; update(); });
+
+  // Buttons
+  document.querySelectorAll('.btn.minus').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-target') === 'send' ? send : ret;
+      target.value = clamp(Number(target.value) - 1, 0, target.max);
+      if (target === send) sendRange.value = target.value; else retRange.value = target.value;
+      update();
+    });
+  });
+  document.querySelectorAll('.btn.plus').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-target') === 'send' ? send : ret;
+      target.value = clamp(Number(target.value) + 1, 0, target.max);
+      if (target === send) sendRange.value = target.value; else retRange.value = target.value;
+      update();
+    });
+  });
+
+  // Init
+  send.max = ENDO; sendRange.max = ENDO;
+  update();
+})();
+</script>
+
+{% load otree static %}
+<link rel="stylesheet" href="{% static 'global/style.css' %}"/>
+
+{{ endblock }}

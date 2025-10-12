@@ -1,0 +1,27 @@
+{{ block title }}
+Deuxième prise de décision
+{{ endblock }}
+{{ block content }}
+
+{{ if player.round_tg == 2 }}
+
+<div class="card" id="sendback">
+<p> Veuillez maintenant déclarer vos décisions en tant que participant B. </p>
+<p> À ce stade, nous ne savons pas combien le participant A a décidé d'envoyer. 
+    Vous devez donc déclarer pour chaque montant que vous pourriez recevoir (<i>montant envoyé multiplié par trois</i>) ce que vous souhaiteriez renvoyer au participant A. </p>
+<p> Si le rôle de participant B vous est attribué, vous renverrez au participant A le montant correspondant à la décision que vous avez prise pour le montant que le participant A vous aura effectivement envoyé. </p>
+</p>
+{{ if player.condition == "Inter"}}
+<p> <i> Rappel : Le participant A fera partie du groupe {{ if player.location == "INSP"}}
+      de participants extérieurs à l'INSP{{ elif player.location == "B" }}
+      de participants de l'INSP{{ endif }}.</i> </p>
+{{ endif }}
+{{  formfields }}
+<button class="button button1"> Valider mes décisions </button>
+</div>
+
+{{ endif }}
+{% load otree static %}
+    <link rel="stylesheet" href="{% static 'global/style.css' %}"/>
+
+{{ endblock }}
