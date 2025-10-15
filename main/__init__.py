@@ -176,7 +176,7 @@ class Game1_2(Page):
     def error_message(player, values):
         if player.round_dg == 1 and values['dg_send'] is None:
             return 'Merci de rentrer une valeur.'
-        elif  player.round_dg == 1 and values['dg_send']>10:
+        elif  player.round_dg == 1 and values['dg_send']>20:
             return 'Le montant envoyé au participant B ne peut pas être au-delà de 10 ECUs.'
         if player.round_pgg == 1 and values['pgg_contrib'] is None:
             return 'Merci de rentrer une valeur.'
@@ -293,7 +293,7 @@ class Game2_2(Page):
     def error_message(player, values):
         if player.round_dg == 2 and values['dg_send'] is None:
             return 'Merci de rentrer une valeur.'
-        elif  player.round_dg == 2 and values['dg_send']>10:
+        elif  player.round_dg == 2 and values['dg_send']>20:
             return 'Le montant envoyé au participant B ne peut pas être au-delà de 10 ECUs.'
         if player.round_pgg == 2 and values['pgg_contrib'] is None:
             return 'Merci de rentrer une valeur.'
@@ -410,7 +410,7 @@ class Game3_2(Page):
     def error_message(player, values):
         if player.round_dg == 3 and values['dg_send'] is None:
             return 'Merci de rentrer une valeur.'
-        elif  player.round_dg == 3 and values['dg_send']>10:
+        elif  player.round_dg == 3 and values['dg_send']>20:
             return 'Le montant envoyé au participant B ne peut pas être au-delà de 10 ECUs.'
         if player.round_pgg == 3 and values['pgg_contrib'] is None:
             return 'Merci de rentrer une valeur.'
