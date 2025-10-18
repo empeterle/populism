@@ -5,6 +5,17 @@ doc = """
 This file contains the full experiment
 """
 
+## To change before the sessions of INSP !
+# Add in Player
+#quest_joinINSP = models.IntegerField(choices=[[1, "3ème concours"],
+#                                                [2, "Elèves concours interne)"],
+#                                                [3, "Elèves concours externe"],
+#                                                [4,"Elèves officiers"],
+#                                                [5; "Elève Orient"]],
+#                                      label = "A laquelle de ces catégories appartenez-vous au sein de l'INSP ?")
+#  Then in Quest1 replace 'quest_birthplace' by 'quest_joinINSP'
+# Enlever quest_hrofficials ?
+
 
 class C(BaseConstants):
     NAME_IN_URL = 'main'
@@ -67,6 +78,7 @@ class Player(BasePlayer):
     quest_trustparliament   = models.IntegerField(choices=likert_trust, widget=widgets.RadioSelect, label="Les parlementaires")
     quest_trustlocal        = models.IntegerField(choices=likert_trust, widget=widgets.RadioSelect, label="Les élus locaux")
     quest_trustcivilservant = models.IntegerField(choices=likert_trust, widget=widgets.RadioSelect, label="Les fonctionnaires")
+    quest_hrofficials       = models.IntegerField(choices=likert_trust, widget=widgets.RadioSelect, label="Les haut-fonctionnaires")
     quest_trustunions       = models.IntegerField(choices=likert_trust, widget=widgets.RadioSelect, label="Les dirigeants syndicaux")
     quest_trustmedia        = models.IntegerField(choices=likert_trust, widget=widgets.RadioSelect, label="Les médias")
     quest_trustscientist    = models.IntegerField(choices=likert_trust, widget=widgets.RadioSelect, label="Les scientifiques")
@@ -519,7 +531,7 @@ class Quest2(Page):
     # Questionnaire : trust
     form_model = 'player'
     form_fields = ['quest_trustgovernment', 'quest_trustparliament','quest_trustlocal', 'quest_trustcivilservant',
-                   'quest_trustunions', 'quest_trustmedia','quest_trustscientist']
+                   'quest_hrofficials', 'quest_trustunions', 'quest_trustmedia','quest_trustscientist']
 
 class Quest3(Page):
     # Questionnaire : values
@@ -529,7 +541,7 @@ class Quest3(Page):
                    'quest_antipolitics1', 'quest_antipolitics2', 'quest_antipopulism1', 'quest_antipopulism2']
 
 class Quest4(Page):
-    # Questionnaire : general interest
+    # Questionnaire : General interest
     form_model = 'player'
     form_fields = ['quest_generalinterest']
 
